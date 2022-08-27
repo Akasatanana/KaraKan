@@ -16,7 +16,11 @@ struct TrackGridView: View {
             ForEach(chunkedTracks, id: \.self){chunk in
                 HStack(spacing: 0){
                     ForEach(chunk, id: \.self){track in
-                        TrackRowView(track: track)
+                        NavigationLink(destination: {
+                            SongDetailsView(track: track)
+                        }, label: {
+                            TrackRowView(track: track)
+                        })
                     }
                 }
                 .listRowInsets(EdgeInsets())

@@ -42,6 +42,7 @@ struct TrackRowView: View {
                             .lineLimit(1)
                     }
                 }
+                .foregroundColor(.white)
                 .background(.black.opacity(0.2))
             }
         }

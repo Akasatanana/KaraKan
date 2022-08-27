@@ -60,7 +60,9 @@ class SearchTracksModel : ObservableObject{
                     //print(completion)
                 },
                 receiveValue: { results in
-                    self.searchResults = results.tracks!.items
+                    DispatchQueue.main.async {
+                        self.searchResults = results.tracks!.items
+                    }
                 }
             )
             .store(in: &cancellables)
