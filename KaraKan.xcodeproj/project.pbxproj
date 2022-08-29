@@ -20,6 +20,8 @@
 		6EE915F228AF4CF9000292BF /* GetLyricsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE915F128AF4CF9000292BF /* GetLyricsModel.swift */; };
 		6EE915F428AF4D4B000292BF /* SongDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE915F328AF4D4B000292BF /* SongDetailsView.swift */; };
 		6EE915F628AF50BE000292BF /* GetLyricsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE915F528AF50BE000292BF /* GetLyricsController.swift */; };
+		6EE915F828BC8163000292BF /* LyricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE915F728BC8163000292BF /* LyricsView.swift */; };
+		6EE915FB28BC841F000292BF /* utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE915FA28BC841F000292BF /* utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		6EE915F128AF4CF9000292BF /* GetLyricsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLyricsModel.swift; sourceTree = "<group>"; };
 		6EE915F328AF4D4B000292BF /* SongDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongDetailsView.swift; sourceTree = "<group>"; };
 		6EE915F528AF50BE000292BF /* GetLyricsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLyricsController.swift; sourceTree = "<group>"; };
+		6EE915F728BC8163000292BF /* LyricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsView.swift; sourceTree = "<group>"; };
+		6EE915FA28BC841F000292BF /* utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +75,7 @@
 			children = (
 				6E09353928A95A73001A759B /* KaraKanApp.swift */,
 				6E09353B28A95A73001A759B /* ContentView.swift */,
+				6EE915F928BC83F4000292BF /* Utilities */,
 				6E09354D28A95E36001A759B /* Views */,
 				6E09354B28A95E1F001A759B /* Models */,
 				6E09354C28A95E29001A759B /* Controllers */,
@@ -113,8 +118,17 @@
 				6E09355028A980A1001A759B /* TrackRowView.swift */,
 				6E09355D28AA350D001A759B /* TrackGridView.swift */,
 				6EE915F328AF4D4B000292BF /* SongDetailsView.swift */,
+				6EE915F728BC8163000292BF /* LyricsView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		6EE915F928BC83F4000292BF /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				6EE915FA28BC841F000292BF /* utility.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,6 +207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EE915FB28BC841F000292BF /* utility.swift in Sources */,
 				6EE915F428AF4D4B000292BF /* SongDetailsView.swift in Sources */,
 				6E09354828A95ACD001A759B /* SearchTracksModel.swift in Sources */,
 				6EE915F628AF50BE000292BF /* GetLyricsController.swift in Sources */,
@@ -201,6 +216,7 @@
 				6E09355128A980A1001A759B /* TrackRowView.swift in Sources */,
 				6E09354F28A963BD001A759B /* SearchTracksControllers.swift in Sources */,
 				6E09353A28A95A73001A759B /* KaraKanApp.swift in Sources */,
+				6EE915F828BC8163000292BF /* LyricsView.swift in Sources */,
 				6EE915F228AF4CF9000292BF /* GetLyricsModel.swift in Sources */,
 				6E09355E28AA350D001A759B /* TrackGridView.swift in Sources */,
 			);

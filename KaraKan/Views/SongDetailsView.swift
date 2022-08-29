@@ -29,20 +29,22 @@ struct SongDetailsView: View {
         ScrollView(showsIndicators: false){
             VStack{
                 if let artists = track.artists {
-                    ForEach(artists, id: \.self){artist in
-                        Text(artist.name)
+                    VStack(alignment: .leading){
+                        HStack(alignment: .top){
+                            Text("アーティスト名：")
+                            VStack(alignment: .leading){
+                                ForEach(artists, id: \.self){artist in
+                                    Text(artist.name)
+                                }
+                            }
+                        }
+                        HStack{
+                            Text("曲名：")
+                            Text(track.name)
+                        }
                     }
-                    Text(track.name)
                 }
-                if let error = model.error {
-                    Text(error.localizedDescription)
-                }else {
-                    if let lyrics = model.lyrics {
-                        Text(lyrics)
-                    }else {
-                        Text("歌詞が取得できませんでした！")
-                    }
-                }
+                LyricsView(model: model)
             }
         }
         .onAppear{
