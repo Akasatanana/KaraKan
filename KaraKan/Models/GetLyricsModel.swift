@@ -66,6 +66,10 @@ class GetLyricsModel: ObservableObject {
             }else {
                 if let id = await getSongId(song: song){
                     await getLyric(id: id)
+                }else{
+                    DispatchQueue.main.async {
+                        self.error = myErrors.noIdError
+                    }
                 }
             }
         }
@@ -225,10 +229,19 @@ class GetLyricsModel: ObservableObject {
         copiedsong = song.replacingOccurrences(of: " ", with: "")
         copiedsong = copiedsong.replacingOccurrences(of: "　", with: "")
         
+        for copiedCandidate in copiedCandidates {
+            print(copiedCandidate.result.fullTitle)
+        }
+        
         copiedCandidates.removeAll(where: {
             !$0.result.artistNames.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains(artist) ||
-            !$0.result.fullTitle.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains(copiedsong)
+            !$0.result.fullTitle.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains(copiedsong) ||
+            $0.result.fullTitle.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains("Instrumental")
         })
+        
+        for copiedCandidate in copiedCandidates {
+            print(copiedCandidate.result.fullTitle)
+        }
         
         return copiedCandidates
         
@@ -246,9 +259,13 @@ class GetLyricsModel: ObservableObject {
         copiedsong = song.replacingOccurrences(of: " ", with: "")
         copiedsong = copiedsong.replacingOccurrences(of: "　", with: "")
         
+        
+        
+        
         copiedCandidates.removeAll(where: {
             $0.result.artistNames.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains("Genius") ||
-            !$0.result.fullTitle.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains(copiedsong)
+            !$0.result.fullTitle.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains(copiedsong) ||
+            $0.result.fullTitle.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "　", with: "").contains("Instrumental")
         })
         
         return copiedCandidates
@@ -291,5 +308,27 @@ class GetLyricsModel: ObservableObject {
         }else {
             return string
         }
+    }
+    
+    /*
+     @param  artist - アーティスト名
+     @param song - 曲名
+     @return URL - googleで歌詞を検索するURL
+     APIで歌詞情報が得られなかった場合 or 歌詞情報が誤っている場合に，google検索のURLを設置する
+    */
+    func googleLyrics (artist: String, song: String) -> URL? {
+        let urlString = ("https://www.google.com/search?q=" + artist + "+" + song + "+歌詞").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        return URL(string: urlString)
+        
+    }
+    
+    enum myErrors: Error, LocalizedError {
+        case noIdError
+        
+        var errorDescription: String? {
+                switch self {
+                case .noIdError: return "曲情報が取得できませんでした．"
+                }
+            }
     }
 }

@@ -27,24 +27,39 @@ struct SongDetailsView: View {
     @ObservedObject var model: GetLyricsModel = GetLyricsModel()
     var body: some View {
         ScrollView(showsIndicators: false){
-            VStack{
-                if let artists = track.artists {
-                    VStack(alignment: .leading){
-                        HStack(alignment: .top){
-                            Text("アーティスト名：")
-                            VStack(alignment: .leading){
-                                ForEach(artists, id: \.self){artist in
-                                    Text(artist.name)
-                                }
-                            }
-                        }
-                        HStack{
-                            Text("曲名：")
-                            Text(track.name)
-                        }
+            VStack(alignment: .center){
+                AsyncImage(url: track.album?.images?.first?.url){image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .opacity(0.8)
+                }placeholder: {
+                    ZStack{
+                        Rectangle()
+                            .foregroundColor(.gray)
+                            .scaledToFit()
+                            .opacity(0.8)
+                        
+                        Text("準備中")
+                            .foregroundColor(.black)
+                        
                     }
                 }
-                LyricsView(model: model)
+                Text(track.name)
+                    .font(.largeTitle)
+                    .bold()
+                
+                if let artists = track.artists {
+                    ForEach(artists, id: \.self){artist in
+                        Text(artist.name)
+                            .font(.title2)
+                            .foregroundColor(.gray.opacity(0.8))
+                            
+                    
+                    }
+                }
+                    
+                LyricsView(track: track, model: model)
             }
         }
         .onAppear{
