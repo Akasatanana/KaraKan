@@ -10,7 +10,7 @@ import Foundation
 class GetLyricsModel: ObservableObject {
     //GeniusAPIを使って，アーティスト名，曲名を利用して歌詞を取得するクラス
     //歌詞を表示するhtmlをpublishする
-    @Published var lyricshtml: String?
+    @Published var lyrics: String?
     //任意のエラーはここに格納
     @Published var error: Error?
     //APIへのアクセスに必要なアクセストークン
@@ -53,7 +53,12 @@ class GetLyricsModel: ObservableObject {
             case path
         }
     }
-    
+    /*
+     @param artist:アーティスト名
+     @param song:曲名
+     アーティスト名，曲名でGeniusAPIを叩く
+     検索結果が取得できなければ，曲名だけでAPIを叩く
+     */
     func fetchLyrics (artist:String, song:String) {
         Task {
             if let id = await getSongId(artist: artist, song: song){
@@ -66,6 +71,13 @@ class GetLyricsModel: ObservableObject {
         }
     }
     
+    /*
+     @param artist:アーティスト名
+     @param song:曲名
+     @return int: 曲のid
+     
+     アーティスト名，曲名でGeniusAPIを叩き，曲のidを所得
+     */
     private func getSongId (artist:String, song:String) async -> Int? {
         //最初にアーティスト名，曲名から曲を検索し，idを得る関数
         //検索結果が得られなかった場合はnilを返す
@@ -97,6 +109,12 @@ class GetLyricsModel: ObservableObject {
         }
     }
     
+    /*
+     @param song:曲名
+     @return int: 曲のid
+     
+     アーティスト名，曲名でGeniusAPIを叩き，曲のidを所得
+     */
     private func getSongId(song:String) async -> Int? {
         //アーティスト名を含めた検索で検索結果が出なかった場合に使う関数
         
@@ -128,6 +146,10 @@ class GetLyricsModel: ObservableObject {
         
     }
     
+    /*
+     @param id:曲のid
+     曲のidから，プロパティlyricsに歌詞情報を格納する
+     */
     private func getLyric (id: Int) async -> (){
         //曲のidから歌詞のhtmlを返す関数
         
@@ -150,7 +172,7 @@ class GetLyricsModel: ObservableObject {
             if let htmlcode = gethtmlFromjs(js: jscode){
                 let escapedhtmlcode = deleteEscapeSequence(string: htmlcode)
                 DispatchQueue.main.async {
-                    self.lyricshtml = escapedhtmlcode
+                    self.lyrics = self.removeHtmlTag(string: escapedhtmlcode)
                 }
             }
             
@@ -159,6 +181,7 @@ class GetLyricsModel: ObservableObject {
             self.error = error
         }
     }
+    
     
     private func gethtmlFromjs (js: String)-> String? {
         //jsコードから歌詞を表示する部分のhtmlを抜き出す関数
@@ -184,6 +207,7 @@ class GetLyricsModel: ObservableObject {
         res = res.replacingOccurrences(of: "\\\'", with: "\'")
         res = res.replacingOccurrences(of: #"\`"#, with: #"`"#)
         res = res.replacingOccurrences(of: "\\/", with: "/")
+        res = res.replacingOccurrences(of: "\\n", with: "\n")
         return res
     }
     
@@ -229,5 +253,43 @@ class GetLyricsModel: ObservableObject {
         
         return copiedCandidates
         
+    }
+    
+    /*
+      文字列のhtmlタグ(<>で囲まれた部分)を削除する再帰関数
+        removeOne
+      @param  string - htmlの文字列
+      @return string - htmlタグを削除した文字列
+    */
+    private func removeHtmlTag(string: String) -> String {
+        
+        let removedString = removeOneHtmlTag(string: string)
+        if(string == removedString){
+            return removedString
+        }else{
+            return removeHtmlTag(string: removedString)
+        }
+    }
+    /*
+      文字列のhtmlタグ(<>で囲まれた部分)を一つだけ削除する関数
+      @param  string - htmlの文字列
+      @return string - htmlタグを削除した文字列
+    */
+    private func removeOneHtmlTag (string: String) -> String {
+        var copiedString = string
+        if let from = copiedString.firstIndex(of: "<"){
+            if let to = copiedString.firstIndex(of: ">"){
+                if(from.utf16Offset(in: copiedString) < to.utf16Offset(in: copiedString)){
+                    copiedString.removeSubrange(from ... to)
+                    return copiedString
+                }else{
+                    return string
+                }
+            }else {
+                return string
+            }
+        }else {
+            return string
+        }
     }
 }

@@ -37,8 +37,8 @@ struct SongDetailsView: View {
                 if let error = model.error {
                     Text(error.localizedDescription)
                 }else {
-                    if let html = model.lyricshtml {
-                        HTMLStringView(htmlContent: "<p>hello</p>")
+                    if let lyrics = model.lyrics {
+                        Text(lyrics)
                     }else {
                         Text("歌詞が取得できませんでした！")
                     }
